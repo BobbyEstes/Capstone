@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h1>Hello from the Cutlist Page</h1>
+
+    <div><b>Customer Name:</b> {{customer.cust_name}}</div>
+    <div><b>Customer Number:</b> {{customer.cust_no}}</div>
+    <div><b>Street Address:</b> {{customer.street}}</div>
+    <div><b>City:</b> {{customer.city}}</div>
+    <div><b>State:</b> {{customer.state}}</div>
+    <div><b>Zip code:</b> {{customer.zip}}</div>
+    <div><b>Ship Via:</b> {{customer.ship_via}}</div>
+
+    <div><b>Order #'s:</b></div>
+    {% for i in customer.order_set.all %}
+    <div class='order_list'>
+        {{ i.ship_via}}{{ i.order_num }} [VERIFIED][LOADED]
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

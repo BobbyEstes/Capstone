@@ -2,10 +2,16 @@
 from django.shortcuts import render
 import mysql.connector
 from decouple import config
+from .models import Cust_info, Order
 
 
 def shipping(request):
-    
+    return render(request, 'pages/shipping.html')
+
+
+def get_cutlist(request):
+    customer = request.POST.get("Customer")
+    del_date = request.POST.get("del_date")
 
     mydb = mysql.connector.connect(
         host=config("HOST"),
@@ -16,8 +22,10 @@ def shipping(request):
 
     mycursor = mydb.cursor()
 
-    mycursor.execute("""
+    mycursor.execute(f"""
     select
+        cust_customers.custno,
+        cust_customers.company,
         so_jobs.del_date,
         so_jobs.id as sono,
         so_jobs.pono,
@@ -37,16 +45,22 @@ def shipping(request):
         back_office.so_jobs join back_office.cust_shipaddress
         on so_jobs.shipto_id = cust_shipaddress.id join
         back_office.cust_deltype on cust_shipaddress.prefType = cust_deltype.id join
-        back_office.cust_delvia on cust_shipaddress.prefVia = cust_delvia.id
+        back_office.cust_delvia on cust_shipaddress.prefVia = cust_delvia.id join
+        back_office.cust_customers on so_jobs.custno = cust_customers.custno
     where
-        so_jobs.custno = 'THE004'
+        so_jobs.custno = '{customer}'
     and so_jobs.sostatus = 'scheduled'
-    and so_jobs.del_date <= '2021-06-01';""")
+    and so_jobs.del_date <= '{del_date}';""")
 
     myresult = mycursor.fetchall()
-    print(myresult)
-    # my_string = ""
-    for x in myresult:
-        # my_string = + x
-        print(x)
-    return render(request, 'pages/shipping.html')
+
+    customer = Cust_info.objects.create(cust_name=myresult[0][1], cust_no=myresult[0][0], street=myresult[0]
+                                        [6], city=myresult[0][8], state=myresult[0][9], zip=myresult[0][10], ship_via=myresult[0][-1],)
+
+    for x in range(len(myresult)):
+        Order.objects.create(order_num=myresult[x][3], customer=customer)
+    context = {
+        'customer': customer
+    }
+
+    return render(request, 'pages/cut_list.html', context)
