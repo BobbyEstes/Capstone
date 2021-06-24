@@ -1,8 +1,18 @@
 
 from django.shortcuts import render
 import mysql.connector
+import math
 from decouple import config
-from .models import Cust_info, Order
+from .models import Cust_info, Order, Job_numbers
+
+mydb = mysql.connector.connect(
+    host=config("HOST"),
+    user=config("USER"),
+    password=config("PASSWORD"),
+    database=config("DATABASE")
+)
+
+mycursor = mydb.cursor()
 
 
 def shipping(request):
@@ -13,17 +23,11 @@ def get_cutlist(request):
     customer = request.POST.get("Customer")
     del_date = request.POST.get("del_date")
 
-    mydb = mysql.connector.connect(
-        host=config("HOST"),
-        user=config("USER"),
-        password=config("PASSWORD"),
-        database=config("DATABASE")
-    )
-
-    mycursor = mydb.cursor()
-
     mycursor.execute(f"""
     select
+        so_detail.wo_id,
+        max(so_detail.height) as max_height,
+        sum(so_detail.selling_units) total_sf,
         cust_customers.custno,
         cust_customers.company,
         so_jobs.del_date,
@@ -41,26 +45,79 @@ def get_cutlist(request):
         cust_shipaddress.prefType,
         cust_delvia.name as delvia,
         cust_deltype.deltype as deltype
-    from
-        back_office.so_jobs join back_office.cust_shipaddress
-        on so_jobs.shipto_id = cust_shipaddress.id join
-        back_office.cust_deltype on cust_shipaddress.prefType = cust_deltype.id join
-        back_office.cust_delvia on cust_shipaddress.prefVia = cust_delvia.id join
+        from
+        back_office.so_jobs
+        join
+        back_office.so_detail on so_jobs.id = so_detail.sono
+        join
+        back_office.cust_shipaddress on so_jobs.shipto_id = cust_shipaddress.id
+        join
+        back_office.cust_deltype on cust_shipaddress.prefType = cust_deltype.id
+        join
+        back_office.cust_delvia on cust_shipaddress.prefVia = cust_delvia.id
+        join
         back_office.cust_customers on so_jobs.custno = cust_customers.custno
     where
         so_jobs.custno = '{customer}'
     and so_jobs.sostatus = 'scheduled'
-    and so_jobs.del_date <= '{del_date}';""")
+    and so_jobs.del_date <= '{del_date}'
+    group by so_detail.wo_id;""")
 
     myresult = mycursor.fetchall()
 
-    customer = Cust_info.objects.create(cust_name=myresult[0][1], cust_no=myresult[0][0], street=myresult[0]
-                                        [6], city=myresult[0][8], state=myresult[0][9], zip=myresult[0][10], ship_via=myresult[0][-1],)
+    customer = Cust_info.objects.create(cust_name=myresult[0][4], cust_no=myresult[0][3], street=myresult[0]
+                                        [9], city=myresult[0][11], state=myresult[0][12], zip=myresult[0][13], ship_via=myresult[0][-1],)
 
+
+    sqft_list = []
+    height_list = []
+
+        
     for x in range(len(myresult)):
-        Order.objects.create(order_num=myresult[x][3], customer=customer)
+        print('result', myresult[x][0])
+        Job_numbers.objects.create(job_number=myresult[x][0])
+        height_list.append(myresult[x][1])
+        sqft_list.append(float(myresult[x][2]))
+        
+    
+    print(height_list)
+    print(sqft_list)
+            
+    # total_sqft = sum(sqft_list) + 10
+    # height_list.sort()       
+    # total_height = height_list[-1]
+    # total_width = 39
+    # crate_length = math.ceil(total_height) + 1
+    # crate_width = total_width
+    # crate_height = math.ceil(total_sqft / (crate_length * crate_width / 144)) + 3
+    # crate_top_length = crate_length + .875
+    # crate_top_width = crate_width + .875
+    # crate_bottom_length = crate_length
+    # crate_bottom_width = crate_width
+    # crate_sides_length = crate_length + .875
+    # crate_sides_width = crate_height + .5
+    # crate_ends_length = crate_width + .875
+    # crate_ends_width = crate_height + .5
+    # corner_brace_length = crate_height + 1
+    # corner_brace_width = 3
+    Order.objects.create(job_number=myresult[x][0], corner_brace_width=corner_brace_width, corner_brace_length=corner_brace_length, crate_ends_width=crate_ends_width, crate_ends_length=crate_ends_length, crate_sides_width=crate_sides_width, crate_sides_length=crate_sides_length,
+                                     crate_bottom_width=crate_bottom_width, crate_bottom_length=crate_bottom_length, crate_top_width=crate_top_width, crate_top_length=crate_top_length, crate_length=crate_length, total_width=crate_width, total_height=crate_height, sq_ft=total_sqft, customer=customer)
+
+    
+    
+    
+    customer = Cust_info.objects.all().filter(cust_no__exact="WOO025").first() # querries the customer info looking for customer # and returns the first result
+    customer_id = Cust_info.objects.all().filter(cust_no__exact="WOO025").first().id # returns the id associated with this customer
+    customer_order = Order.objects.all().filter(customer=customer_id) # filters by the foriegn key finding the order associated with this customer
+    customer_order_id = Order.objects.all().filter(customer=customer_id).first().id # filters by the foriegn key finding the id of the customer order
+    Job_number = Job_numbers.objects.all().filter(order=customer_order_id) # returns all job numbers associated with a spacific order
+    print(Job_number)
+    orders = Order.objects.all()
     context = {
-        'customer': customer
+        'orders': orders,
+        'customer': customer,
+        'job_number': Job_number,
+        'customer_order': customer_order
     }
 
     return render(request, 'pages/cut_list.html', context)

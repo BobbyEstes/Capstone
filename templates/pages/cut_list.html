@@ -12,11 +12,12 @@
     <div><b>Ship Via:</b> {{customer.ship_via}}</div>
 
     <div><b>Order #'s:</b></div>
-    {% for i in customer.order_set.all %}
+    {% for i in job_number %}
     <div class='order_list'>
-        {{ i.ship_via}}{{ i.order_num }} [VERIFIED][LOADED]
+        {{ i.job_number }} [VERIFIED][LOADED]
     </div>
     {% endfor %}
+    <div><b>Crate Length:</b> {{ customer.crate_length }}</div>
 </div>
 
 
