@@ -1,19 +1,18 @@
 .container {
-  margin: 20px;
+  margin-left: 20px;
 }
 
 h1 {
     color: firebrick;
-  }
+}
 
 form {
   width: 200px;
 }
 
-.order_list {
-  margin-left: 80px;
-}
-
 button {
   margin-top: 10px;
+}
+.crate_specs {
+  margin: 5px;
 }

@@ -18,25 +18,24 @@ class Cust_info(models.Model):
 class Order(models.Model):
     customer = models.ForeignKey(
         Cust_info, on_delete=models.PROTECT, blank=False)
-    height_list = models.IntegerField(default=0)
-    sqft_list = models.IntegerField(default=0)
-    crate_length = models.IntegerField(default=0)
-    crate_width = models.IntegerField(default=0)
-    crate_height = models.IntegerField(default=0)
-    crate_top_length = models.IntegerField(default=0)
-    crate_top_width = models.IntegerField(default=0)
-    crate_bottom_length = models.IntegerField(default=0)
-    crate_bottom_width = models.IntegerField(default=0)
-    crate_sides_length = models.IntegerField(default=0)
-    crate_sides_width = models.IntegerField(default=0)
-    crate_ends_length = models.IntegerField(default=0)
-    crate_ends_width = models.IntegerField(default=0)
-    corner_brace_length = models.IntegerField(default=0)
-    corner_brace_width = models.IntegerField(default=0)
-    sq_ft = models.IntegerField(default=0)
+    max_height = models.FloatField(default=0)
+    sqft = models.FloatField(default=0)
+    crate_length = models.FloatField(default=0)
+    crate_width = models.FloatField(default=0)
+    crate_height = models.FloatField(default=0)
+    crate_top_length = models.FloatField(default=0)
+    crate_top_width = models.FloatField(default=0)
+    crate_bottom_length = models.FloatField(default=0)
+    crate_bottom_width = models.FloatField(default=0)
+    crate_sides_length = models.FloatField(default=0)
+    crate_sides_width = models.FloatField(default=0)
+    crate_ends_length = models.FloatField(default=0)
+    crate_ends_width = models.FloatField(default=0)
+    corner_brace_length = models.FloatField(default=0)
+    corner_brace_width = models.FloatField(default=0)
     
     def __str__(self):
-        return "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d" % (self.height_list, self.sqft_list, self.crate_length, self.crate_width, self.crate_height, self.crate_top_length, self.crate_top_width, self.crate_bottom_length, self.crate_bottom_width, self.crate_sides_length, self.crate_sides_width, self.crate_ends_length, self.crate_ends_width, self.corner_brace_length, self.corner_brace_width,)
+        return "%s" % (f"order for {self.customer.cust_name}")
 
 
 class Job_numbers(models.Model):

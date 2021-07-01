@@ -1,24 +1,46 @@
 {% extends 'base.html' %}
 {% block content %}
+{% for customer in cust_info %}
 <div class="container">
-    <h1>Hello from the Cutlist Page</h1>
+    <h1>Crate Cutlist</h1>
+    <div class="cust_info">
+        <div><b>Customer Name:</b> {{customer.cust_name}}</div>
+        <div><b>Customer Number:</b> {{customer.cust_no}}</div>
+        <div><b>Street Address:</b> {{customer.street}}</div>
+        <div><b>City:</b> {{customer.city}}</div>
+        <div><b>State:</b> {{customer.state}}</div>
+        <div><b>Zip code:</b> {{customer.zip}}</div>
+        <div><b>Ship Via:</b> {{customer.ship_via}}</div>
+    </div>
 
-    <div><b>Customer Name:</b> {{customer.cust_name}}</div>
-    <div><b>Customer Number:</b> {{customer.cust_no}}</div>
-    <div><b>Street Address:</b> {{customer.street}}</div>
-    <div><b>City:</b> {{customer.city}}</div>
-    <div><b>State:</b> {{customer.state}}</div>
-    <div><b>Zip code:</b> {{customer.zip}}</div>
-    <div><b>Ship Via:</b> {{customer.ship_via}}</div>
+    <div class="order_numbs"><b>Order #'s:</b>
+    {% for orders in customer.order_set.all %}
+        {% for job in orders.job_numbers_set.all %}
+        <p>{{job.job_number}} [VERIFIED][LOADED]</p>
 
-    <div><b>Order #'s:</b></div>
-    {% for i in job_number %}
-    <div class='order_list'>
-        {{ i.job_number }} [VERIFIED][LOADED]
+        {% endfor %}
+    </div>
+    <div class="crate_specs">
+        <p><b>Crate Length:</b> {{ orders.crate_length }}</p>
+        <p><b>Crate width:</b> {{ orders.crate_width }}</p>
+        <p><b>Crate height:</b> {{ orders.crate_height }}</p>
+    </div>
+    <div class="cutlist">
+        <p><b>Crate top length:</b> {{ orders.crate_top_length }}</p>
+        <p><b>Crate top width:</b> {{ orders.crate_top_width }}</p>
+        <p><b>Crate bottom Length:</b> {{ orders.crate_bottom_length }}</p>
+        <p><b>Crate bottom width:</b> {{ orders.crate_bottom_width }}</p>
+        <p><b>Crate sides Length:</b> {{ orders.crate_sides_length }}</p>
+        <p><b>Crate sides width:</b> {{ orders.crate_sides_width }}</p>
+        <p><b>Crate ends Length:</b> {{ orders.crate_ends_length }}</p>
+        <p><b>Crate ends width:</b> {{ orders.crate_ends_width }}</p>
+        <p><b>Corner brace length:</b> {{ orders.corner_brace_length }}</p>
+        <p><b>Corner brace width:</b> {{ orders.corner_brace_width }}</p>
     </div>
     {% endfor %}
-    <div><b>Crate Length:</b> {{ customer.crate_length }}</div>
-</div>
 
+    
+</div>
+{% endfor %}
 
 {% endblock %}
