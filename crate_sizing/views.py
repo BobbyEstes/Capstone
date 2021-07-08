@@ -85,13 +85,14 @@ def get_cutlist(request):
     crate_ends_width = (crate_height + .5)
     corner_brace_length = (crate_height + 1)
     corner_brace_width = 3
+    
 
-    order = Order.objects.create(max_height=inside_crate_length, sqft=sqft, crate_height=crate_height, crate_width=crate_width, 
-                                 corner_brace_width=corner_brace_width, corner_brace_length=corner_brace_length,
-                                 crate_ends_width=crate_ends_width, crate_ends_length=crate_ends_length,
-                                 crate_sides_width=crate_sides_width, crate_sides_length=crate_sides_length,
-                                     crate_bottom_width=crate_bottom_width, crate_bottom_length=crate_bottom_length,
-                                     crate_top_width=crate_top_width, crate_top_length=crate_top_length, crate_length=crate_length,
+    order = Order.objects.create(max_height=round(inside_crate_length, 3), sqft=sqft, crate_height=round(crate_height, 3), crate_width=round(crate_width, 3), 
+                                 corner_brace_width=round(corner_brace_width, 3), corner_brace_length=round(corner_brace_length, 3),
+                                 crate_ends_width=round(crate_ends_width, 3), crate_ends_length=round(crate_ends_length, 3),
+                                 crate_sides_width=round(crate_sides_width, 3), crate_sides_length=round(crate_sides_length, 3),
+                                     crate_bottom_width=round(crate_bottom_width, 3), crate_bottom_length=round(crate_bottom_length, 3),
+                                     crate_top_width=round(crate_top_width, 3), crate_top_length=round(crate_top_length, 3), crate_length=round(crate_length, 3),
                                      customer=customer)
     
     

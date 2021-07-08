@@ -13,7 +13,8 @@
         <div><b>Ship Via:</b> {{customer.ship_via}}</div>
     </div>
 
-    <div class="order_numbs"><b>Order #'s:</b>
+    <div class="order_numbs_label"><b>Order #'s:</b></div>
+    <div class="order_numbs">
     {% for orders in customer.order_set.all %}
         {% for job in orders.job_numbers_set.all %}
         <p>{{job.job_number}} [VERIFIED][LOADED]</p>
