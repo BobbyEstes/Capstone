@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-  <h1>Hello from the Shipping Page</h1>
+  <h1>Welcome to Create-a-Crate</h1>
   <form action='{% url "crate_sizing:get_cutlist" %}' method="POST">
     {% csrf_token %}
     <div class="mb-3">
-      <label for="formGroupExampleInput" class="form-label">Customer Number</label>
+      <label for="formGroupExampleInput" class="form-label"><b>Customer Number</b></label>
       <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Customer Number" name="Customer">
     </div>
     <div class="form-group">
-      <label for="del_date">Delivery Date</label>
+      <label for="del_date"><b>Delivery Date</b></label>
       <input class="form-control" type="date" name="del_date" id="del_date">
     </div>
-    <button type="submit" class="btn btn-primary btn-lg">Create Cutlist</button>
+    <button type="submit" class="btn btn-primary btn-lg"><b>Create Cutlist</b></button>
   </form>
 </div>
 {% endblock %}

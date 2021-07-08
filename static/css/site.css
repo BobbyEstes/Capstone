@@ -3,7 +3,24 @@
 }
 
 h1 {
-    color: firebrick;
+  animation-duration: 3s;
+  animation-name: slidein;
+  color: rgb(36, 34, 178);
+  margin-top: 20px;
+  width: fit-content;
+  
+}
+
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
 }
 
 form {
@@ -13,6 +30,35 @@ form {
 button {
   margin-top: 10px;
 }
+
+.cust_info {
+  margin-top: 20px;
+  max-width: 50%;
+  display: inline-block;
+}
+
+.order_numbs_label {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 10px;
+  display: inline-block;
+
+}
+
 .crate_specs {
-  margin: 5px;
+  max-width: 25%;
+  
+  
+}
+
+.order_numbs {
+  display: flex;
+  justify-content: flex-end;
+  display: inline-block;
+
+}
+
+.cutlist {
+  width: auto;
+  display: inline-block;
 }
