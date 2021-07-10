@@ -15,33 +15,62 @@
 
     <div class="order_numbs_label"><b>Order #'s:</b></div>
     <div class="order_numbs">
-    {% for orders in customer.order_set.all %}
+        {% for orders in customer.order_set.all %}
         {% for job in orders.job_numbers_set.all %}
         <p>{{job.job_number}} [VERIFIED][LOADED]</p>
 
         {% endfor %}
+
     </div>
-    <div class="crate_specs">
-        <p><b>Crate Length:</b> {{ orders.crate_length }}</p>
-        <p><b>Crate width:</b> {{ orders.crate_width }}</p>
-        <p><b>Crate height:</b> {{ orders.crate_height }}</p>
-    </div>
-    <div class="cutlist">
-        <p><b>Crate top length:</b> {{ orders.crate_top_length }}</p>
-        <p><b>Crate top width:</b> {{ orders.crate_top_width }}</p>
-        <p><b>Crate bottom Length:</b> {{ orders.crate_bottom_length }}</p>
-        <p><b>Crate bottom width:</b> {{ orders.crate_bottom_width }}</p>
-        <p><b>Crate sides Length:</b> {{ orders.crate_sides_length }}</p>
-        <p><b>Crate sides width:</b> {{ orders.crate_sides_width }}</p>
-        <p><b>Crate ends Length:</b> {{ orders.crate_ends_length }}</p>
-        <p><b>Crate ends width:</b> {{ orders.crate_ends_width }}</p>
-        <p><b>Corner brace length:</b> {{ orders.corner_brace_length }}</p>
-        <p><b>Corner brace width:</b> {{ orders.corner_brace_width }}</p>
-    </div>
+    <table style="width:25%">
+        <tr>
+            <th>Crate Length</th>
+            <th>Crate Width</th>
+            <th>Crate Height</th>
+        </tr>
+        <tr>
+            <td> {{ orders.crate_length }} </td>
+            <td> {{ orders.crate_width }} </td>
+            <td> {{ orders.crate_height }} </td>
+        </tr>
+    </table>
+
+    <table style="width:25%">
+        <tr>
+            <th>Part Description</th>
+            <th>Width</th>
+            <th>Height</th>
+        </tr>
+        <tr>
+            <td>Crate Top</td>
+            <td> {{ orders.crate_top_width }} </td>
+            <td> {{ orders.crate_top_length }} </td>
+        </tr>
+        <tr>
+            <td>Crate Bottom</td>
+            <td> {{ orders.crate_bottom_width }} </td>
+            <td> {{ orders.crate_bottom_length }} </td>
+        </tr>
+        <tr>
+            <td>Crate Sides</td>
+            <td> {{ orders.crate_sides_width }} </td>
+            <td> {{ orders.crate_sides_length }} </td>
+        </tr>
+        <tr>
+            <td>Crate Ends</td>
+            <td> {{ orders.crate_ends_width }} </td>
+            <td> {{ orders.crate_ends_length }} </td>
+        </tr>
+        <tr>
+            <td>Corner Braces</td>
+            <td> {{ orders.corner_brace_width }} </td>
+            <td> {{ orders.corner_brace_length }} </td>
+        </tr>
+    </table>
     {% endfor %}
 
-    
 </div>
+
 {% endfor %}
 
 {% endblock %}
