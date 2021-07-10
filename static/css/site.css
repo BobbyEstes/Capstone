@@ -3,11 +3,12 @@
 }
 
 h1 {
-  animation-duration: 3s;
+  animation-duration: 2s;
   animation-name: slidein;
   color: rgb(36, 34, 178);
   margin-top: 20px;
   width: fit-content;
+  display: inline-block;
   
 }
 
@@ -34,7 +35,6 @@ button {
 .cust_info {
   margin-top: 20px;
   max-width: 50%;
-  display: inline-block;
 }
 
 .order_numbs_label {
@@ -42,23 +42,24 @@ button {
   justify-content: flex-end;
   margin-right: 10px;
   display: inline-block;
-
-}
-
-.crate_specs {
-  max-width: 25%;
-  
-  
+  position: relative;
+  left: 50%;
+  bottom: 170px;
 }
 
 .order_numbs {
   display: flex;
   justify-content: flex-end;
   display: inline-block;
-
+  position: relative;
+  left: 50%;
+  bottom: 170px;
 }
 
-.cutlist {
-  width: auto;
-  display: inline-block;
+table, th, td {
+  border: 1px solid black; 
+}
+
+table {
+  margin-top: 20px;
 }

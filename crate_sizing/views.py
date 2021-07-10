@@ -101,24 +101,13 @@ def get_cutlist(request):
         print('height', myresult[x][1])
         print('sqft', myresult[x][2])
         Job_numbers.objects.create(job_number=myresult[x][0], order=order)
-        # Order.objects.create(max_height=myresult[x][1], sqft=myresult[x][2], customer=customer)
-        # Order.objects.create(sqft=myresult[x][2], customer=customer)
 
         
-    
-    # customer = Cust_info.objects.all().filter(cust_no__exact="CON012").first() # querries the customer info looking for customer # and returns the first result
-    # customer_id = Cust_info.objects.all().filter(cust_no__exact="CON012").first().id # returns the id associated with this customer
-    # customer_order = Order.objects.all().filter(customer=customer_id) # filters by the foriegn key finding the order associated with this customer
-    # customer_order_id = Order.objects.all().filter(customer=customer_id).first().id # filters by the foriegn key finding the id of the customer order
-    # Job_number = Job_numbers.objects.all().filter(order=customer_order_id) # returns all job numbers associated with a spacific order
-    # print(Job_number)
     orders = Order.objects.all()
     cust_info = Cust_info.objects.all()
     context = {
         'orders': orders,
         'cust_info': cust_info,
-        # 'job_number': Job_number,
-        # 'customer_order': customer_order
     }
 
     return render(request, 'pages/cut_list.html', context)
