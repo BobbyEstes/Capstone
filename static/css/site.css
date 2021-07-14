@@ -1,5 +1,7 @@
 .container {
   margin-left: 20px;
+  /* background-image: url(full_crate.jpg); */
+  height: 900px;
 }
 
 h1 {
@@ -62,4 +64,7 @@ table, th, td {
 
 table {
   margin-top: 20px;
+  /* display: inline-block; */
+  /* display: flex;
+  justify-content: flex-start; */
 }
